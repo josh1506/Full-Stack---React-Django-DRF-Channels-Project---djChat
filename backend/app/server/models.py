@@ -1,10 +1,34 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.dispatch import receiver
+
+
+def category_icon_update_path(instance, filename):
+    return f"category/${instance.id}/category_icon/{filename}"
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
+    icon = models.FileField(upload_to=category_icon_update_path, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # This will prevent storage for multiple icons save in user icon folder
+        # Delete old icon if category exists and has a new icon
+        if self.id is not None:
+            existing_category = get_object_or_404(Category, id=self.id)
+            if existing_category.icon != self.icon:
+                existing_category.icon.delete(save=False)
+        super(Category, self).save(*args, **kwargs)
+
+    @receiver(models.signals.pre_delete, sender="server.Category")
+    def category_delete_files(sender, instance, **kwargs):
+        for field in instance._meta.fields:
+            if field.name == "icon":
+                file = getattr(instance, field.name)
+                if file:
+                    file.delete(save=False)
 
     def __str__(self):
         return self.name
