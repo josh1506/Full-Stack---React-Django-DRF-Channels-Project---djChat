@@ -7,11 +7,13 @@ from rest_framework.response import Response
 
 from app.server.models import Server, Category
 from .serializers import ServerSerializer
+from .schema import server_list_docs
 
 
 class ServerListViewSet(viewsets.ViewSet):
     queryset = Server.objects.all()
 
+    @server_list_docs
     def list(self, request):
         """
         List the servers based on various filtering criteria passed via query parameters.
@@ -55,7 +57,7 @@ class ServerListViewSet(viewsets.ViewSet):
 
         # Annotate queryset with the number of members if requested
         if with_num_members is True:
-            self.queryset = self.queryset.annotate(num_members=Count('members'))
+            self.queryset = self.queryset.annotate(num_members=Count('member'))
 
         # Replace queryset with a single server object if by_server_id is specified
         if by_server_id is not None:
