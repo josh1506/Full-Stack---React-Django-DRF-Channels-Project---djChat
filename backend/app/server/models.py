@@ -3,6 +3,16 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
 
+from .validators import validate_icon_image_size, validate_image_file_extension
+
+
+def server_banner_update_path(instance, filename):
+    return f"server/${instance.id}/server_banner/{filename}"
+
+
+def server_icon_update_path(instance, filename):
+    return f"server/${instance.id}/server_icon/{filename}"
+
 
 def category_icon_update_path(instance, filename):
     return f"category/${instance.id}/category_icon/{filename}"
@@ -52,10 +62,30 @@ class Channel(models.Model):
                               related_name='channel_owner')
     topic = models.CharField(max_length=100)
     server = models.ForeignKey(Server, on_delete=models.CASCADE, related_name='channel_server')
+    banner = models.ImageField(upload_to=server_banner_update_path, blank=True, null=True,
+                               validators=[validate_image_file_extension])
+    icon = models.ImageField(upload_to=server_icon_update_path, blank=True, null=True,
+                             validators=[validate_icon_image_size, validate_image_file_extension])
 
     def save(self, *args, **kwargs):
+        # This will prevent storage for multiple icons save in user icon folder
+        # Delete old icon if category exists and has a new icon
         self.name = self.name.lower()
+        if self.id is not None:
+            existing_channel = get_object_or_404(Channel, id=self.id)
+            if existing_channel.icon != self.icon:
+                existing_channel.icon.delete(save=False)
+            if existing_channel.banner != self.banner:
+                existing_channel.banner.delete(save=False)
         super(Channel, self).save(*args, **kwargs)
+
+    @receiver(models.signals.pre_delete, sender="server.Server")
+    def category_delete_files(sender, instance, **kwargs):
+        for field in instance._meta.fields:
+            if field.name == "icon" or field.name == "banner":
+                file = getattr(instance, field.name)
+                if file:
+                    file.delete(save=False)
 
     def __str__(self):
         return self.name

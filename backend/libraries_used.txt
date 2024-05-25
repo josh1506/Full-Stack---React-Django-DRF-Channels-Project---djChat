@@ -1,0 +1,4 @@
+[Images]
+For images
+pip install pillow
+https://pypi.org/project/pillow/
