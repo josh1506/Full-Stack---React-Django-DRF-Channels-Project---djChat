@@ -4,6 +4,8 @@ import Home from "./pages/Home.tsx";
 import {ThemeProvider} from "@mui/material";
 import {createMuiTheme} from "./theme/theme.tsx";
 
+import "./theme/main.css"
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
