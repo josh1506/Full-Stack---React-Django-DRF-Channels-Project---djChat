@@ -1,17 +1,21 @@
 import React from "react";
+
 import {Box, Typography} from "@mui/material";
 import {useTheme} from "@mui/material/styles";
 
-import axios from "axios"
+import useAxiosWithInterceptor from "../../helpers/jwtinterceptor.ts";
 
 const SecondaryDraw: React.FC = () => {
     const theme = useTheme()
+    const jwtAxios = useAxiosWithInterceptor()
 
-    axios.get('http://127.0.0.1:8000/api/server/select/').then(resp => {
-        console.log(resp.data)
-    }).catch(err => {
-        console.log(err)
-    })
+    jwtAxios.get('http://127.0.0.1:8000/api/server/select/')
+        .then(resp => {
+            console.log(resp.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
 
     return (
         <Box sx={{

@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from app.server.models import Server, Category
@@ -12,6 +13,7 @@ from .schema import server_list_docs
 
 class ServerListViewSet(viewsets.ViewSet):
     queryset = Server.objects.all()
+    permission_classes = [IsAuthenticated]
 
     @server_list_docs
     def list(self, request):
