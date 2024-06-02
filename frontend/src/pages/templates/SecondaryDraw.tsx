@@ -9,13 +9,13 @@ const SecondaryDraw: React.FC = () => {
     const theme = useTheme()
     const jwtAxios = useAxiosWithInterceptor()
 
-    jwtAxios.get('http://127.0.0.1:8000/api/server/select/')
-        .then(resp => {
-            console.log(resp.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    // jwtAxios.get('http://127.0.0.1:8000/api/server/select/')
+    //     .then(resp => {
+    //         console.log(resp.data)
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
 
     return (
         <Box sx={{
