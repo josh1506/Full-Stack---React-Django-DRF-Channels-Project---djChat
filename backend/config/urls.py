@@ -21,10 +21,11 @@ from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
-from app.server.views import ServerListViewSet
+from app.server.views import CategoryListViewSet, ServerListViewSet
 
 router = DefaultRouter()
 router.register("api/server/select", ServerListViewSet)
+router.register("api/server/category", CategoryListViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -1,14 +1,24 @@
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from app.server.models import Server, Category
-from .serializers import ServerSerializer
+from .serializers import CategorySerializer, ServerSerializer
 from .schema import server_list_docs
+
+
+class CategoryListViewSet(viewsets.ViewSet):
+    queryset = Category.objects.all()
+
+    @extend_schema(responses=CategorySerializer)
+    def list(self, request):
+        serializer = CategorySerializer(self.queryset, many=True)
+        return Response(serializer.data)
 
 
 class ServerListViewSet(viewsets.ViewSet):

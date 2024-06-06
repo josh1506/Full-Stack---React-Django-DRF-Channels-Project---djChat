@@ -5,6 +5,7 @@ import PrimaryAppBar from "./templates/PrimaryAppBar.tsx";
 import PrimaryDraw from "./templates/PrimaryDraw.tsx";
 import SecondaryDraw from "./templates/SecondaryDraw.tsx";
 import PopularChannels from "../components/PrimaryDraw/PopularChannels.tsx";
+import ExploreCategories from "../components/SecondaryDraw/ExploreCategories.tsx";
 
 const Home = () => {
     return (
@@ -12,9 +13,11 @@ const Home = () => {
             <CssBaseline/>
             <PrimaryAppBar/>
             <PrimaryDraw>
-                <PopularChannels/>
+                <PopularChannels open={false}/>
             </PrimaryDraw>
-            <SecondaryDraw/>
+            <SecondaryDraw>
+                <ExploreCategories/>
+            </SecondaryDraw>
             <Main/>
         </Box>
     )
