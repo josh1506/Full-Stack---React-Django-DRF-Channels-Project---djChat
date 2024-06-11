@@ -30,6 +30,8 @@ class Category(models.Model):
             existing_category = get_object_or_404(Category, id=self.id)
             if existing_category.icon != self.icon:
                 existing_category.icon.delete(save=False)
+
+        self.name = self.name.lower()
         super(Category, self).save(*args, **kwargs)
 
     @receiver(models.signals.pre_delete, sender="server.Category")
@@ -75,6 +77,7 @@ class Server(models.Model):
                 file = getattr(instance, field.name)
                 if file:
                     file.delete(save=False)
+
     def __str__(self):
         return self.name
 

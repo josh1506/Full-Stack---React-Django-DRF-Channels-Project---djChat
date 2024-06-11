@@ -32,10 +32,6 @@ const PopularChannels: React.FC<Props> = ({open}) => {
         fetchData()
     }, [])
 
-    useEffect(() => {
-        console.log(dataCRUD)
-    }, [dataCRUD])
-
     return (
         <>
             <Box
@@ -45,7 +41,6 @@ const PopularChannels: React.FC<Props> = ({open}) => {
                     display: "flex",
                     alignItems: "center",
                     flex: "1 1 100%",
-                    backgroundColor: "salmon"
                 }}>
                 <Typography sx={{display: open ? "block" : "none"}}>
                     Popular

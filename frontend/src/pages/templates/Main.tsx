@@ -1,8 +1,13 @@
-import {Box, Typography} from "@mui/material";
-import {useTheme} from "@mui/material/styles";
-import React from "react";
+import {ReactNode} from "react";
 
-const Main: React.FC = () => {
+import {Box} from "@mui/material";
+import {useTheme} from "@mui/material/styles";
+
+type Props = {
+    children: ReactNode
+}
+
+const Main: React.FC<Props> = ({children}) => {
     const theme = useTheme()
 
     return (
@@ -12,9 +17,7 @@ const Main: React.FC = () => {
             flexGrow: 1,
             overflow: "hidden"
         }}>
-            {[...Array(100)].map((_, i) => (
-                <Typography key={i} paragraph>{i + 1}</Typography>
-            ))}
+            {children}
         </Box>
     )
 }
