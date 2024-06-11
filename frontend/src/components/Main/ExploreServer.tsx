@@ -35,8 +35,6 @@ const ExploreServer = () => {
         fetchData()
     }, [categoryName])
 
-    console.log("Working")
-
     return (
         <Container maxWidth="lg">
             <Box sx={{pt: 6}}>
@@ -50,7 +48,8 @@ const ExploreServer = () => {
                             fontWeight: 700,
                             letterSpacing: "-2px",
                             textTransform: "capitalize",
-                        }
+                        },
+                        textAlign: {xs: "center", sm: "start"},
                     }}
                 >
                     {categoryName ? categoryName : "Popular Channels"}
@@ -62,7 +61,10 @@ const ExploreServer = () => {
                     noWrap
                     component="h2"
                     color="textSecondary"
-                    sx={{display: {sm: "block", fontWeight: 700, letterSpacing: "-1px"}}}
+                    sx={{
+                        display: {sm: "block", fontWeight: 700, letterSpacing: "-1px"},
+                        textAlign: {xs: "center", sm: "start"}
+                    }}
                 >
                     {categoryName ? `Channels talking about ${categoryName}` : "Check out some of our popular channels "}
                 </Typography>

@@ -3,12 +3,23 @@ import React, {useEffect, useState} from "react";
 import MenuIcon from "@mui/icons-material/Menu"
 import {AppBar, Box, Drawer, IconButton, Link, Toolbar, Typography, useMediaQuery} from "@mui/material";
 import {useTheme} from "@mui/material/styles";
+import ExploreCategories from "../../components/SecondaryDraw/ExploreCategories.tsx";
 
 const PrimaryAppBar: React.FC = () => {
     const theme = useTheme()
 
     const [sideMenu, setSideMenu] = useState(false)
     const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"))
+
+    const list = () => (
+        <Box
+            sx={{paddingTop: `${theme.primaryAppBar.height}px`, minWidth: 200}}
+            onClick={toggleDrawer(false)}
+            onKeyDown={toggleDrawer(false)}
+        >
+            <ExploreCategories/>
+        </Box>
+    )
 
     useEffect(() => {
         if (isSmallScreen && sideMenu) {
@@ -38,12 +49,7 @@ const PrimaryAppBar: React.FC = () => {
                 </Box>
 
                 <Drawer anchor="left" open={sideMenu} onClose={toggleDrawer(false)}>
-                    <Typography>1</Typography>
-                    <Typography>2</Typography>
-                    <Typography>3</Typography>
-                    <Typography>4</Typography>
-                    <Typography>5</Typography>
-                    <Typography>6</Typography>
+                    {list()}
                 </Drawer>
 
                 <Link href="/" underline="none" color="inherit">
