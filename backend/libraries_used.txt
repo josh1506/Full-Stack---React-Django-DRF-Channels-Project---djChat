@@ -2,3 +2,10 @@
 For images
 pip install pillow
 https://pypi.org/project/pillow/
+
+[Channels]
+pip install channels
+https://channels.readthedocs.io/
+
+pip install 'uvicorn[standard]'
+https://www.uvicorn.org/
