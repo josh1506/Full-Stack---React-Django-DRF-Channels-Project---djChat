@@ -6,11 +6,13 @@ import {createMuiTheme} from "./theme/theme.tsx";
 
 import "./theme/main.css"
 import Explore from "./pages/Explore.tsx";
+import Server from "./pages/Server.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
             <Route path="/" element={<Home/>}/>
+            <Route path="/server" element={<Server/>}/>
             <Route path="/explore/:categoryName" element={<Explore/>}/>
         </Route>
     )
