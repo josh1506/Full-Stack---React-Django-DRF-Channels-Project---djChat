@@ -1,47 +1,63 @@
-import useWebSocket from "react-use-websocket";
-import {useState} from "react";
+import {useEffect} from "react";
 
-const socketUrl = 'ws://127.0.0.1:8000/ws/test'
+import {useNavigate, useParams} from "react-router-dom";
+import {Box, CssBaseline} from "@mui/material";
+
+import Main from "./templates/Main.tsx";
+import PrimaryAppBar from "./templates/PrimaryAppBar.tsx";
+import PrimaryDraw from "./templates/PrimaryDraw.tsx";
+import SecondaryDraw from "./templates/SecondaryDraw.tsx";
+import MessageInterface from "../components/Main/MessegeInterface.tsx";
+import ServerChannels from "../components/SecondaryDraw/ServerChannels.tsx";
+import UserServers from "../components/PrimaryDraw/UserServers.tsx";
+import useCrud from "../hooks/useCrud.ts";
+import {Server} from "../@types/server";
 
 const Server = () => {
-    const [newMessage, setNewMessage] = useState<string[]>([])
-    const [message, setMessage] = useState("")
+    const navigate = useNavigate()
+    const {serverId, channelId} = useParams()
 
-    const {sendJsonMessage} = useWebSocket(socketUrl, {
-        onOpen: () => {
-            console.log("Connected!")
-        },
-        onClose: () => {
-            console.log("Closed!")
-        },
-        onError: () => {
-            console.log("Error!")
-        },
-        onMessage: (msg) => {
-            const data = JSON.parse(msg.data)
-            setNewMessage(prevState => [...prevState, data.new_message])
-        }
-    })
+    const {dataCRUD, error, isLoading, fetchData} = useCrud<Server>(
+        [],
+        `/server/select/?by_server_id=${serverId}`
+    )
 
-    const onSubmit = (e) => {
-        e.preventDefault()
-        sendJsonMessage({"type": "message", message})
-        setMessage("")
+    if (error !== null && error.message === "404") {
+        navigate("/")
+        return null
     }
 
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    // // Check if the channelId is valid by searching for it in the data fetched from the API
+    // const isChannel = (): Boolean => {
+    //     if (!channelId) {
+    //         return true
+    //     }
+    //
+    //     return dataCRUD.some((server) => {
+    //         Server.channel_server.some((channel) => {
+    //             channel.id === parseInt(channelId)
+    //         })
+    //     })
+    // }
+
     return (
-        <div>
-            <h1>Server</h1>
-            {newMessage.map((data, index) => (
-                <div key={index} style={{backgroundColor: "salmon", padding: 1, margin: 1, width: "200px"}}>{data}</div>
-            ))}
-            <form onSubmit={onSubmit}>
-                <label>Enter Message:
-                    <input type={"text"} value={message} onChange={e => setMessage(e.target.value)}/>
-                </label>
-                <button type={"submit"}>Send Message</button>
-            </form>
-        </div>
+        <Box sx={{display: "flex"}}>
+            <CssBaseline/>
+            <PrimaryAppBar/>
+            <PrimaryDraw>
+                <UserServers open={false} data={dataCRUD}/>
+            </PrimaryDraw>
+            <SecondaryDraw>
+                <ServerChannels/>
+            </SecondaryDraw>
+            <Main>
+                <MessageInterface/>
+            </Main>
+        </Box>
     )
 }
 

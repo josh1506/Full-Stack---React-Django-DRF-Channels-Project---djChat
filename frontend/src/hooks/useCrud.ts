@@ -2,7 +2,6 @@ import {useState} from "react";
 
 import useAxiosWithInterceptor from "../helpers/jwtinterceptor.ts";
 import {BASE_URL} from "../config.ts";
-import {Error} from "@mui/icons-material";
 
 interface IuseCrud<T> {
     dataCRUD: T[]
@@ -27,8 +26,8 @@ const useCrud = <T>(initialData: T[], apiURL: string): IuseCrud<T> => {
             setIsLoading(false)
             return data
         } catch (err: any) {
-            if (err.response && err.response.status === 400) {
-                setError(new Error("400"))
+            if (err.response && err.response.status === 404) {
+                setError(new Error("404"))
             }
             setIsLoading(false)
             throw err
