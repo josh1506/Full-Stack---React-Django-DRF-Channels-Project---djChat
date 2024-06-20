@@ -37,7 +37,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "app.account",
-    "app.server"
+    "app.server",
+    "app.webchat"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
