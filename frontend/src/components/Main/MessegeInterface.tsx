@@ -5,7 +5,7 @@ import {useParams} from "react-router-dom";
 
 import useCrud from "../../hooks/useCrud.ts";
 import {Server} from "../../@types/server";
-import {Box, Typography} from "@mui/material";
+import {Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
 import MessageInterfaceChannels from "./MessageInterfaceChannels.tsx";
 
 interface ServerChannelProps {
@@ -88,19 +88,68 @@ const MessageInterface = (props: ServerChannelProps) => {
                 </Box>
             ) : (
                 <div>
-                    <h1>MessageInterface</h1>
-                    {newMessage.map((data: Message, index: number) => (
-                        <div key={index} style={{backgroundColor: "salmon", padding: 1, margin: 1, width: "200px"}}>
-                            <p>{data.sender}</p>
-                            <p>{data.content}</p>
-                        </div>
-                    ))}
-                    <form onSubmit={onSubmit}>
-                        <label>Enter Message:
-                            <input type={"text"} value={message} onChange={e => setMessage(e.target.value)}/>
-                        </label>
-                        <button type={"submit"}>Send Message</button>
-                    </form>
+                    <Box
+                        sx={{overflow: "hidden", p: 0, height: `calc(100vh - 100px})`}}
+                    >
+                        <List sx={{width: "100%", bgcolor: "backgroundColor.paper"}}>
+                            {newMessage.map((msg: Message, index: number) => (
+                                <ListItem key={index} alignItems={"flex-start"}>
+                                    <ListItemAvatar>
+                                        <Avatar alt={"user image"}/>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primaryTypographyProps={{fontSize: "12px", variant: "body2"}}
+                                        primary={
+                                            <Typography
+                                                component={"span"}
+                                                variant={"body1"}
+                                                color={"text.primary"}
+                                                sx={{display: "inline", fontWeight: 600}}
+                                            >
+                                                {msg.sender}
+                                            </Typography>
+                                        }
+                                        secondary={
+                                            <>
+                                                <Typography
+                                                    variant={"body1"}
+                                                    style={{
+                                                        overflow: "visible",
+                                                        whiteSpace: "normal",
+                                                        textOverflow: "clip"
+                                                    }}
+                                                    sx={{
+                                                        display: "inline",
+                                                        lineHeight: 1.2,
+                                                        fontWeight: 400,
+                                                        letterSpacing: "-0.2px"
+                                                    }}
+                                                    component={"span"}
+                                                    color={"text.primary"}
+                                                >
+                                                    {msg.content}
+                                                </Typography>
+                                            </>
+                                        }
+                                    />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+
+                    {/*<h1>MessageInterface</h1>*/}
+                    {/*{newMessage.map((data: Message, index: number) => (*/}
+                    {/*    <div key={index} style={{backgroundColor: "salmon", padding: 1, margin: 1, width: "200px"}}>*/}
+                    {/*        <p>{data.sender}</p>*/}
+                    {/*        <p>{data.content}</p>*/}
+                    {/*    </div>*/}
+                    {/*))}*/}
+                    {/*<form onSubmit={onSubmit}>*/}
+                    {/*    <label>Enter Message:*/}
+                    {/*        <input type={"text"} value={message} onChange={e => setMessage(e.target.value)}/>*/}
+                    {/*    </label>*/}
+                    {/*    <button type={"submit"}>Send Message</button>*/}
+                    {/*</form>*/}
                 </div>
             )}
         </>
