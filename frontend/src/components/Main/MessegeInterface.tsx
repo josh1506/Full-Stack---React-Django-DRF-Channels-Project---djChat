@@ -6,6 +6,7 @@ import {useParams} from "react-router-dom";
 import useCrud from "../../hooks/useCrud.ts";
 import {Server} from "../../@types/server";
 import {Box, Typography} from "@mui/material";
+import MessageInterfaceChannels from "./MessageInterfaceChannels.tsx";
 
 interface ServerChannelProps {
     data: Server[];
@@ -59,6 +60,7 @@ const MessageInterface = (props: ServerChannelProps) => {
 
     return (
         <>
+            <MessageInterfaceChannels data={data}/>
             {channelId === undefined ? (
                 <Box
                     sx={{
