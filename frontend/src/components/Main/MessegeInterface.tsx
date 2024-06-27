@@ -5,8 +5,16 @@ import {useParams} from "react-router-dom";
 
 import useCrud from "../../hooks/useCrud.ts";
 import {Server} from "../../@types/server";
-import {Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
+import {Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, TextField, Typography} from "@mui/material";
 import MessageInterfaceChannels from "./MessageInterfaceChannels.tsx";
+import {useTheme} from "@mui/material/styles";
+
+interface SendMessageData {
+    type: string;
+    message: string;
+
+    [key: string]: any;
+}
 
 interface ServerChannelProps {
     data: Server[];
@@ -20,6 +28,7 @@ interface Message {
 }
 
 const MessageInterface = (props: ServerChannelProps) => {
+    const theme = useTheme()
     const {data} = props
     const {serverId, channelId} = useParams()
     const {fetchData} = useCrud<Server>([], `/messages/?channel_id=${channelId}`)
@@ -49,13 +58,19 @@ const MessageInterface = (props: ServerChannelProps) => {
         onMessage: (msg) => {
             const data = JSON.parse(msg.data)
             setNewMessage(prevState => [...prevState, data.new_message])
+            setMessage("")
         }
     })
 
-    const onSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        sendJsonMessage({"type": "message", message})
-        setMessage("")
+        sendJsonMessage({"type": "message", message} as SendMessageData)
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleSubmit(e)
+        }
     }
 
     return (
@@ -136,20 +151,31 @@ const MessageInterface = (props: ServerChannelProps) => {
                             ))}
                         </List>
                     </Box>
-
-                    {/*<h1>MessageInterface</h1>*/}
-                    {/*{newMessage.map((data: Message, index: number) => (*/}
-                    {/*    <div key={index} style={{backgroundColor: "salmon", padding: 1, margin: 1, width: "200px"}}>*/}
-                    {/*        <p>{data.sender}</p>*/}
-                    {/*        <p>{data.content}</p>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
-                    {/*<form onSubmit={onSubmit}>*/}
-                    {/*    <label>Enter Message:*/}
-                    {/*        <input type={"text"} value={message} onChange={e => setMessage(e.target.value)}/>*/}
-                    {/*    </label>*/}
-                    {/*    <button type={"submit"}>Send Message</button>*/}
-                    {/*</form>*/}
+                    <Box sx={{position: "sticky", bottom: 0, width: "100%"}}>
+                        <form
+                            onSubmit={handleSubmit}
+                            style={{
+                                bottom: 0,
+                                right: 0,
+                                padding: "1rem",
+                                backgroundColor: theme.palette.background.default,
+                                zIndex: 1
+                            }}
+                        >
+                            <Box sx={{display: "flex"}}>
+                                <TextField
+                                    minRows={1}
+                                    maxRows={4}
+                                    sx={{flexGrow: 1}}
+                                    value={message}
+                                    onChange={e => setMessage(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    fullWidth
+                                    multiline
+                                />
+                            </Box>
+                        </form>
+                    </Box>
                 </div>
             )}
         </>
