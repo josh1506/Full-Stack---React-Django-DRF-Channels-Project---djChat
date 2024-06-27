@@ -8,6 +8,7 @@ import {Server} from "../../@types/server";
 import {Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, TextField, Typography} from "@mui/material";
 import MessageInterfaceChannels from "./MessageInterfaceChannels.tsx";
 import {useTheme} from "@mui/material/styles";
+import Scroll from "./Scroll.tsx";
 
 interface SendMessageData {
     type: string;
@@ -106,7 +107,8 @@ const MessageInterface = (props: ServerChannelProps) => {
                     <Box
                         sx={{overflow: "hidden", p: 0, height: `calc(100vh - 100px})`}}
                     >
-                        <List sx={{width: "100%", bgcolor: "backgroundColor.paper"}}>
+                        <Scroll>
+                            <List sx={{width: "100%", bgcolor: "backgroundColor.paper"}}>
                             {newMessage.map((msg: Message, index: number) => (
                                 <ListItem key={index} alignItems={"flex-start"}>
                                     <ListItemAvatar>
@@ -150,6 +152,7 @@ const MessageInterface = (props: ServerChannelProps) => {
                                 </ListItem>
                             ))}
                         </List>
+                        </Scroll>
                     </Box>
                     <Box sx={{position: "sticky", bottom: 0, width: "100%"}}>
                         <form
