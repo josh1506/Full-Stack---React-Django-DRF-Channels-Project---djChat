@@ -74,6 +74,13 @@ const MessageInterface = (props: ServerChannelProps) => {
         }
     }
 
+    const formatTimeStamp = (timeStamp: string): string => {
+        const date = new Date(Date.parse(timeStamp))
+        const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+        const formattedTime = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: true})
+        return `${formattedDate} at ${formattedTime}`
+    }
+
     return (
         <>
             <MessageInterfaceChannels data={data}/>
@@ -109,49 +116,59 @@ const MessageInterface = (props: ServerChannelProps) => {
                     >
                         <Scroll>
                             <List sx={{width: "100%", bgcolor: "backgroundColor.paper"}}>
-                            {newMessage.map((msg: Message, index: number) => (
-                                <ListItem key={index} alignItems={"flex-start"}>
-                                    <ListItemAvatar>
-                                        <Avatar alt={"user image"}/>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primaryTypographyProps={{fontSize: "12px", variant: "body2"}}
-                                        primary={
-                                            <Typography
-                                                component={"span"}
-                                                variant={"body1"}
-                                                color={"text.primary"}
-                                                sx={{display: "inline", fontWeight: 600}}
-                                            >
-                                                {msg.sender}
-                                            </Typography>
-                                        }
-                                        secondary={
-                                            <>
-                                                <Typography
-                                                    variant={"body1"}
-                                                    style={{
-                                                        overflow: "visible",
-                                                        whiteSpace: "normal",
-                                                        textOverflow: "clip"
-                                                    }}
-                                                    sx={{
-                                                        display: "inline",
-                                                        lineHeight: 1.2,
-                                                        fontWeight: 400,
-                                                        letterSpacing: "-0.2px"
-                                                    }}
-                                                    component={"span"}
-                                                    color={"text.primary"}
-                                                >
-                                                    {msg.content}
-                                                </Typography>
-                                            </>
-                                        }
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
+                                {newMessage.map((msg: Message, index: number) => (
+                                    <ListItem key={index} alignItems={"flex-start"}>
+                                        <ListItemAvatar>
+                                            <Avatar alt={"user image"}/>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primaryTypographyProps={{fontSize: "12px", variant: "body2"}}
+                                            primary={
+                                                <>
+                                                    <Typography
+                                                        component={"span"}
+                                                        variant={"body1"}
+                                                        color={"text.primary"}
+                                                        sx={{display: "inline", fontWeight: 600}}
+                                                    >
+                                                        {msg.sender}
+                                                    </Typography>
+                                                    <Typography
+                                                        component={"span"}
+                                                        variant={"caption"}
+                                                        color={"textSecondary"}
+                                                    >
+                                                        {" "}
+                                                        {formatTimeStamp(msg.timestamp)}
+                                                    </Typography>
+                                                </>
+                                            }
+                                            secondary={
+                                                <>
+                                                    <Typography
+                                                        variant={"body1"}
+                                                        style={{
+                                                            overflow: "visible",
+                                                            whiteSpace: "normal",
+                                                            textOverflow: "clip"
+                                                        }}
+                                                        sx={{
+                                                            display: "inline",
+                                                            lineHeight: 1.2,
+                                                            fontWeight: 400,
+                                                            letterSpacing: "-0.2px"
+                                                        }}
+                                                        component={"span"}
+                                                        color={"text.primary"}
+                                                    >
+                                                        {msg.content}
+                                                    </Typography>
+                                                </>
+                                            }
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
                         </Scroll>
                     </Box>
                     <Box sx={{position: "sticky", bottom: 0, width: "100%"}}>
