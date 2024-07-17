@@ -37,10 +37,7 @@ const messageInterface = (props: ServerChannelProps) => {
 
   const { serverId, channelId } = useParams();
 
-  const { newMessage, message, setMessage, sendJsonMessage } = useChatWebSocket(
-    channelId || "",
-    serverId || ""
-  );
+  const { newMessage, message, setMessage, sendJsonMessage } = useChatWebSocket(channelId || "", serverId || "");
 
   const server_name = data?.[0]?.name ?? "Server";
 
