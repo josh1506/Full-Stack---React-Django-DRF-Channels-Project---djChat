@@ -1,29 +1,27 @@
-import {Box, CssBaseline} from "@mui/material";
-
-import Main from "./templates/Main.tsx";
-import PrimaryAppBar from "./templates/PrimaryAppBar.tsx";
-import PrimaryDraw from "./templates/PrimaryDraw.tsx";
-import SecondaryDraw from "./templates/SecondaryDraw.tsx";
-import PopularChannels from "../components/PrimaryDraw/PopularChannels.tsx";
-import ExploreCategories from "../components/SecondaryDraw/ExploreCategories.tsx";
-import ExploreServer from "../components/Main/ExploreServer.tsx";
+import { Box, CssBaseline } from "@mui/material";
+import PrimaryAppBar from "./templates/PrimaryAppBar";
+import PrimaryDraw from "./templates/PrimaryDraw";
+import SecondaryDraw from "./templates/SecondaryDraw";
+import Main from "./templates/Main";
+import PopularChannels from "../components/PrimaryDraw/PopularChannels";
+import ExploreCategories from "../components/SecondaryDraw/ExploreCategories";
+import ExploreServers from "../components/Main/ExploreServers";
 
 const Home = () => {
-    return (
-        <Box sx={{display: "flex"}}>
-            <CssBaseline/>
-            <PrimaryAppBar/>
-            <PrimaryDraw>
-                <PopularChannels open={false}/>
-            </PrimaryDraw>
-            <SecondaryDraw>
-                <ExploreCategories/>
-            </SecondaryDraw>
-            <Main>
-                <ExploreServer/>
-            </Main>
-        </Box>
-    )
-}
-
-export default Home
+  return (
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <PrimaryAppBar />
+      <PrimaryDraw>
+        <PopularChannels open={false} />
+      </PrimaryDraw>
+      <SecondaryDraw>
+        <ExploreCategories />
+      </SecondaryDraw>
+      <Main>
+        <ExploreServers />
+      </Main>
+    </Box>
+  );
+};
+export default Home;

@@ -1,29 +1,27 @@
-import axios, {AxiosInstance} from "axios";
-import {useNavigate} from "react-router-dom";
-
-import {BASE_URL} from "../config.ts";
+import axios, { AxiosInstance } from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config';
 
 const API_BASE_URL = BASE_URL
 
 const useAxiosWithInterceptor = (): AxiosInstance => {
-    const jwtAxios = axios.create({baseURL: API_BASE_URL})
+    const jwtAxios = axios.create({ baseURL: API_BASE_URL})
     const navigate = useNavigate()
 
     jwtAxios.interceptors.response.use(
         (response) => {
-            return response
+            return response;
         },
-        async (err) => {
-            const originalRequest = err.config
-
-            if (err.response?.status === 403) {
-                const goRoot = () => navigate("/login")
-                goRoot()
-            }
-            throw err
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response?.status === 403) {
+            const goRoot = () => navigate("/test")
+            goRoot();
         }
+        throw error;
+    }
     )
-    return jwtAxios
+    return jwtAxios;
 }
 
 export default useAxiosWithInterceptor
